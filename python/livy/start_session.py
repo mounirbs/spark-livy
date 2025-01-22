@@ -2,7 +2,7 @@
 
 import json, pprint, requests, textwrap
 host = 'http://livy_server:8998'
-data = {'kind': 'spark'}
+data = {'kind': 'pyspark'}
 headers = {'Content-Type': 'application/json'}
 r = requests.post(host + '/sessions', data=json.dumps(data), headers=headers)
 print(r.json())
