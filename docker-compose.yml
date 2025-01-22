@@ -61,6 +61,7 @@ services:
       - '8998:8998'
     depends_on:
       - spark-master
+      - spark-worker
     networks:
       - sparknet
 networks:
