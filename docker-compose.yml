@@ -1,13 +1,11 @@
 # Source: https://github.com/bitnami/containers/tree/main/bitnami/spark#readme
 
-# Copyright Broadcom, Inc. All Rights Reserved.
-# SPDX-License-Identifier: APACHE-2.0
-
 services:
-  spark:
+  spark-master:
     image: docker.io/bitnami/spark:3.5
     environment:
       - SPARK_MODE=master
+      #- SPARK_DAEMON_MEMORY=2g
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
@@ -23,13 +21,15 @@ services:
       - '7077:7077'
     volumes:
       - ./python:/python
+    networks:
+      - sparknet  
   spark-worker:
     image: docker.io/bitnami/spark:3.5
     environment:
       - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark:7077
-      - SPARK_WORKER_MEMORY=1G
-      - SPARK_WORKER_CORES=1
+      #- SPARK_WORKER_MEMORY=2g
+      #- SPARK_WORKER_CORES=1      
+      - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
@@ -37,9 +37,39 @@ services:
       - SPARK_USER=spark 
     volumes:
       - ./python:/python
-  #livy:
-    #image: apache/livy:latest    
-    #ports:
-      #- '8998:8998'
-    #depends_on:
-      #- spark
+    networks:
+      - sparknet
+  livy:
+    container_name: livy_server
+    hostname: livy_server
+    build: ./livy-server/
+    command: ["sh", "-c", "/opt/bitnami/livy/bin/livy-server"]
+    user: root
+    volumes:
+      - type: bind
+        source: ./livy-server/conf/
+        target: /opt/bitnami/livy/conf/
+      - type: bind
+        source: ./livy-server/target/
+        target: /target/
+      - type: bind
+        source: ./livy-server/data/
+        target: /data/
+      - type: bind
+        source: ./livy-server/logs/
+        target: /opt/bitnami/livy/logs/        
+    ports:
+      - '8998:8998'
+    depends_on:
+      - spark-master
+      - spark-worker
+    networks:
+      - sparknet
+    #deploy:
+      #resources:
+        #limits:
+          #cpus: '0.5'
+          #memory: 2g         
+networks:
+  sparknet:
+    driver: bridge      
