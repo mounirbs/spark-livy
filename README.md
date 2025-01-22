@@ -8,8 +8,8 @@ Spark Livy How-To
 ## Spark Submit
 **Submit a Spark job**
 ```
-spark-submit --master spark://spark:7077 /python/test_spark.py
-spark-submit --master spark://spark:7077 /python/test_pandas.py
+spark-submit --master spark://spark-master:7077 /python/test_spark.py
+spark-submit --master spark://spark-master:7077 /python/test_pandas.py
 ```
 ## Spark REST API
 **Submit a job to the Spark Cluster**
