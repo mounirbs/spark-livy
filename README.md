@@ -5,6 +5,11 @@ Spark Livy How-To
 **Start docker compose**
 ```docker-compose up --scale spark-worker=1```
 
+**Start only one service**
+```
+docker compose -f 'docker-compose.yml' up -d --build '<service_name>'
+```
+
 ## Spark Submit
 **Submit a Spark job**
 ```

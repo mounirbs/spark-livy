@@ -2,7 +2,10 @@
 
 services:
   spark-master:
-    image: docker.io/bitnami/spark:3.5
+    container_name: spark-master
+    hostname: spark-master
+    build: ./spark/
+    command: ["sh", "-c", "/opt/bitnami/scripts/spark/run.sh"]
     environment:
       - SPARK_MODE=master
       #- SPARK_DAEMON_MEMORY=2g
@@ -24,7 +27,8 @@ services:
     networks:
       - sparknet  
   spark-worker:
-    image: docker.io/bitnami/spark:3.5
+    image: spark-livy-spark-master
+    hostname: spark-worker    
     environment:
       - SPARK_MODE=worker
       #- SPARK_WORKER_MEMORY=2g
@@ -37,6 +41,8 @@ services:
       - SPARK_USER=spark 
     volumes:
       - ./python:/python
+    depends_on:
+      - spark-master      
     networks:
       - sparknet
   livy:
