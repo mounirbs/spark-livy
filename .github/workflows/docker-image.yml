@@ -35,6 +35,10 @@ jobs:
         run: |          
           curl -X POST --data '{"kind": "pyspark", "name": "test pyspark session","driverMemory":"1G","driverCores":1,"numExecutors": 1, "executorMemory": "1G","executorCores":1}' -H "Content-Type: application/json" localhost:8998/sessions
 
+      - name: Wait for 1min to start the session
+        run: |
+          sleep 60s
+          
       - name: Test Apache Livy - Run code
         run: |
           curl localhost:8998/sessions/0/statements -X POST -H 'Content-Type: application/json' -d'{"code":"sc.parallelize([1, 2, 3, 4, 5]).count()"}' 
