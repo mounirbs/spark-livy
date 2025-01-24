@@ -2,13 +2,12 @@
 
 services:
   spark-master:
+    image: bitnami/spark:3.0.0
     container_name: spark-master
     hostname: spark-master
-    build: ./spark/
-    command: ["sh", "-c", "/opt/bitnami/scripts/spark/run.sh"]
     environment:
       - SPARK_MODE=master
-      #- SPARK_DAEMON_MEMORY=2g
+      - SPARK_DAEMON_MEMORY=1g
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
@@ -27,12 +26,13 @@ services:
     networks:
       - sparknet  
   spark-worker:
-    image: spark-livy-spark-master
+    image: bitnami/spark:3.0.0
+    container_name: spark-worker
     hostname: spark-worker    
     environment:
       - SPARK_MODE=worker
-      #- SPARK_WORKER_MEMORY=2g
-      #- SPARK_WORKER_CORES=1      
+      - SPARK_WORKER_MEMORY=2g
+      - SPARK_WORKER_CORES=1      
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
@@ -46,8 +46,8 @@ services:
     networks:
       - sparknet
   livy:
-    container_name: livy_server
-    hostname: livy_server
+    container_name: livy-server
+    hostname: livy-server
     build: ./livy-server/
     command: ["sh", "-c", "/opt/bitnami/livy/bin/livy-server"]
     user: root
@@ -71,11 +71,11 @@ services:
       - spark-worker
     networks:
       - sparknet
-    #deploy:
-      #resources:
-        #limits:
-          #cpus: '0.5'
-          #memory: 2g         
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1g
 networks:
   sparknet:
     driver: bridge      
