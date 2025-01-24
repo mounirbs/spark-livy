@@ -29,7 +29,7 @@ jobs:
 
       - name: Test Spark Submit (Pandas)
         run: |          
-          docker compose exec spark-worker pip install pandas && spark-submit --master spark://spark-master:7077 /python/test_pandas.py
+          docker compose exec spark-worker pip3 install pandas --user && spark-submit --master spark://spark-master:7077 /python/test_pandas.py
 
       - name: Test Apache Livy - Start Session
         run: |
