@@ -7,7 +7,7 @@ services:
     hostname: spark-master
     environment:
       - SPARK_MODE=master
-      - SPARK_DAEMON_MEMORY=1g
+      - SPARK_DAEMON_MEMORY=4g
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
@@ -31,7 +31,7 @@ services:
     hostname: spark-worker    
     environment:
       - SPARK_MODE=worker
-      - SPARK_WORKER_MEMORY=2g
+      - SPARK_WORKER_MEMORY=4g
       - SPARK_WORKER_CORES=1      
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
@@ -74,8 +74,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 1g
+          cpus: '1'
+          memory: 4g
 networks:
   sparknet:
     driver: bridge      
