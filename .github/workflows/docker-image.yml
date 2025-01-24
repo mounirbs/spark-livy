@@ -37,7 +37,7 @@ jobs:
 
       - name: Wait for 1min to start the session
         run: |
-          sleep 60s
+          sleep 120s
           
       - name: Test Apache Livy - Run code
         run: |
