@@ -2,7 +2,7 @@
 
 services:
   spark-master:
-    image: bitnami/spark:3.4.0
+    image: bitnami/spark:3.3.0
     container_name: spark-master
     hostname: spark-master
     environment:
@@ -26,7 +26,7 @@ services:
     networks:
       - sparknet  
   spark-worker:
-    image: bitnami/spark:3.4.0
+    image: bitnami/spark:3.3.0
     container_name: spark-worker
     hostname: spark-worker    
     environment:
