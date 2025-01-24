@@ -9,7 +9,7 @@ on:
     branches:
       - main    
 jobs:
-  build:
+  BuildRun:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +18,17 @@ jobs:
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
           compose-file: "./docker-compose.yml"
-
+          
+  Test:
+    needs: BuildRun
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Check containers
+        run: |
+          docker ps
+          
       - name: Test Spark Submit (Spark)
         run: |
           docker-compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/test_spark.py
