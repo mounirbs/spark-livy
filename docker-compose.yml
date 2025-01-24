@@ -52,18 +52,10 @@ services:
     command: ["sh", "-c", "/opt/bitnami/livy/bin/livy-server"]
     user: root
     volumes:
-      - type: bind
-        source: ./livy-server/conf/
-        target: /opt/bitnami/livy/conf/
-      - type: bind
-        source: ./livy-server/target/
-        target: /target/
-      - type: bind
-        source: ./livy-server/data/
-        target: /data/
-      - type: bind
-        source: ./livy-server/logs/
-        target: /opt/bitnami/livy/logs/        
+      - ./livy-server/conf/:/opt/bitnami/livy/conf/       
+      - ./livy-server/target/:/target/        
+      - ./livy-server/data/:/data/       
+      - ./livy-server/logs/:/opt/bitnami/livy/logs/               
     ports:
       - '8998:8998'
     depends_on:
