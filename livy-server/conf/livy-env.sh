@@ -32,6 +32,7 @@
 # - LIVY_NICENESS   Niceness of the Livy server process when running in the background. (Default: 0.)
 # - LIVY_CLASSPATH  Override if the additional classpath is required.
 
-export JAVA_HOME=/opt/bitnami/java/
-export SPARK_HOME=/opt/bitnami/spark/
-export LIVY_LOG_DIR=/opt/bitnami/livy/logs/
+export JAVA_HOME=/opt/bitnami/java
+export SPARK_HOME=/opt/bitnami/spark
+export LIVY_LOG_DIR=/opt/bitnami/livy/logs
+export SPARK_CONF_DIR=/opt/bitnami/spark/conf

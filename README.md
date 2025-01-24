@@ -29,7 +29,7 @@ curl -XGET http://localhost:6066/v1/submissions/status/<JobID>
 **Based on [Docker-Livy](https://github.com/Wittline/docker-livy) and [Quick Start With Apache Livy](https://dzone.com/articles/quick-start-with-apache-livy)**
 Create a Livy Session
 ```
-curl -X POST --data '{"kind": "pyspark"}' -H "Content-Type: application/json" localhost:8998/sessions
+curl -X POST --data '{"kind": "pyspark", "name": "test pyspark session","driverMemory":"1G","driverCores":1,"numExecutors": 1, "executorMemory": "1G","executorCores":1}' -H "Content-Type: application/json" localhost:8998/sessions
 ```
 Execute a PySpark code
 ```

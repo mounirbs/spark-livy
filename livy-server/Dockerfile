@@ -1,8 +1,6 @@
 #https://github.com/apache/incubator-livy?tab=readme-ov-file#building-livy
 #FROM docker.io/bitnami/spark:2.4.5
-#Use the spark image 3.5.4 already buily with the original hadoop3 jars 
-FROM spark-livy-spark-master
-
+FROM docker.io/bitnami/spark:3.0.0
 USER root
 ENV LIVY_HOME /opt/bitnami/livy
 WORKDIR /opt/bitnami/
