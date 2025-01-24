@@ -1,0 +1,41 @@
+#https://github.com/marketplace/actions/docker-compose-action
+name: Docker Compose Action
+on:  
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run docker-compose
+        uses: hoverkraft-tech/compose-action@v2.0.1
+        with:
+          compose-file: "./docker-compose.yml"
+
+      - name: Test Spark Submit (Spark)
+        run: |
+          docker-compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/test_spark.py
+
+      - name: Test Spark Submit (Pandas)
+        run: |
+          pip install pandas
+          docker-compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/test_pandas.py
+
+      - name: Test Apache Livy - Start Session
+        run: |
+          curl -X POST --data '{"kind": "pyspark", "name": "test pyspark session","driverMemory":"1G","driverCores":1,"numExecutors": 1, "executorMemory": "1G","executorCores":1}' -H "Content-Type: application/json" localhost:8998/sessions
+
+      - name: Test Apache Livy - Run code
+        run: |
+          curl localhost:8998/sessions/0/statements -X POST -H 'Content-Type: application/json' -d'{"code":"sc.parallelize([1, 2, 3, 4, 5]).count()"}' 
+
+      - name: Test Apache Livy - Check statement
+        run: |
+          curl localhost:8998/sessions/0/statements/0
