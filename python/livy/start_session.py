@@ -1,8 +1,10 @@
 # from https://livy.apache.org/examples/
+
 # requires pip install requests
 import json, pprint, requests, textwrap
 host = 'http://livy-server:8998'
-data = {'kind': 'pyspark'}
 headers = {'Content-Type': 'application/json'}
+data = {'kind': 'pyspark', 'name': 'test pyspark session from python code'}
+
 r = requests.post(host + '/sessions', data=json.dumps(data), headers=headers)
-print(r.json())
+pprint.pprint(r.json())
