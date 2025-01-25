@@ -27,22 +27,38 @@ jobs:
         run: |
           docker compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/test_spark.py
 
-      #- name: Test Spark Submit (Pandas)
-        #run: |          
-          #docker compose exec spark-worker pip install pandas && spark-submit --master spark://spark-master:7077 /python/test_pandas.py
-
-      - name: Test Apache Livy - Start Session
+      - name: Test Spark Submit (Pandas)
         run: |          
-          curl -X POST --data '{"kind": "pyspark", "name": "test pyspark session","driverMemory":"1G","driverCores":1,"numExecutors": 1, "executorMemory": "1G","executorCores":1}' -H "Content-Type: application/json" localhost:8998/sessions
+          docker compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/test_pandas.py
 
-      - name: Wait for 1min to start the session
+      - name: Test Apache Livy REST - Start Session
+        run: |          
+          curl -X POST --data '{"kind": "pyspark", "name": "test pyspark session from python REST API"}' -H "Content-Type: application/json" localhost:8998/sessions
+
+      - name: Wait for 2min to start the session
         run: |
           sleep 120s
           
-      - name: Test Apache Livy - Run code
+      - name: Test Apache Livy REST - Run code
         run: |
-          curl localhost:8998/sessions/0/statements -X POST -H 'Content-Type: application/json' -d'{"code":"sc.parallelize([1, 2, 3, 4, 5]).count()"}' 
+          curl localhost:8998/sessions/0/statements -X POST -H 'Content-Type: application/json' -d'{"code":"spark.createDataFrame([{\"id\": 1, \"name\": \"Mounir\"}]).show()"}' 
 
-      - name: Test Apache Livy - Check statement
+      - name: Test Apache Livy REST - Check statement
         run: |
           curl localhost:8998/sessions/0/statements/0
+
+      - name: Test Apache Livy Python - Start Session
+        run: |          
+          docker compose exec spark-worker python /python/livy/start_session.py
+
+      - name: Wait for 2min to start the session
+        run: |
+          sleep 120s          
+
+      - name: Test Apache Livy Python - Wait for Idle
+        run: |          
+          docker compose exec spark-worker python /python/livy/wait_for_idle.py
+
+      - name: Test Apache Livy Python - Run code
+        run: |          
+          docker compose exec spark-worker python /python/livy/run_code.py

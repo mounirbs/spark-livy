@@ -1,11 +1,11 @@
 import json, pprint, requests, textwrap
 host = 'http://livy-server:8998'
 headers = {'Content-Type': 'application/json'}
-statements_url = host + '/sessions/0/statements'
+statements_url = host + '/sessions/1/statements'
 
 data = {
   'code': textwrap.dedent("""
-    df = spark.createDataFrame([{"id": 1, "name": "Mounir2"}])
+    df = spark.createDataFrame([{"id": 1, "name": "Mounir"}])
 
     df.show()
     """)
