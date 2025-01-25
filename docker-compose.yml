@@ -29,7 +29,9 @@ services:
     #image: bitnami/spark:3.0.0
     container_name: spark-worker
     hostname: spark-worker
-    build: ./spark/    
+    build:
+      context: ./
+      dockerfile: ./spark/Dockerfile       
     command: ["sh", "-c", "/opt/bitnami/scripts/spark/run.sh"]
     environment:
       - SPARK_MODE=worker

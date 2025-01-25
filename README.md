@@ -1,5 +1,16 @@
 # spark-livy
-Spark Livy How-To
+Spark Livy provides a local environment for developing Spark applications on Docker. It simulates a Spark cluster and integrates Apache Livy to efficiently manage Spark sessions.
+
+## Tested on
+Spark 3.0.0, Apache Livy 0.8
+
+## Issues
+Apache Livy is not supported yet with newer Spark versions. See : [Apache Livy Jira - Add support for Spark 3.5.4](https://issues.apache.org/jira/browse/LIVY-1010)
+
+## Install Python requirements for tests
+```
+pip install -r requirements.txt
+```
 
 ## Docker Compose
 **Start docker compose**

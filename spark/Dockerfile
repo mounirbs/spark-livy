@@ -1,9 +1,9 @@
 FROM bitnami/spark:3.0.0
 USER root
-RUN install_packages curl
+RUN install_packages curl python
 
 # Install Python Dependencies
-COPY ../python/requirements.txt /opt/bitnami/   
+COPY requirements.txt /opt/bitnami/   
 RUN pip install -r /opt/bitnami/requirements.txt
 
 USER 1001
