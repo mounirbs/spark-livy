@@ -58,7 +58,7 @@ jobs:
 
       - name: Test Apache Livy Python - Start Session
         run: |          
-          python /python/livy/start_session.py
+          python ./python/livy/start_session.py
 
       - name: Wait for 2min to start the session
         run: |
@@ -66,8 +66,8 @@ jobs:
 
       - name: Test Apache Livy Python - Wait for Idle
         run: |          
-          python /python/livy/wait_for_idle.py
+          python ./python/livy/wait_for_idle.py
 
       - name: Test Apache Livy Python - Run code
         run: |          
-          python /python/livy/run_code.py
+          python ./python/livy/run_code.py

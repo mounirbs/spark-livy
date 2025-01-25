@@ -184,8 +184,8 @@ curl localhost:8998/sessions/0 -X DELETE 
 
 ### Apache Livy REST API using Python Request library
 ```
-python /python/livy/start_session.py
-python /python/livy/wait_for_idle.py
-python /python/livy/run_code.py
-python /python/livy/delete_session.py
+python ./python/livy/start_session.py
+python ./python/livy/wait_for_idle.py
+python ./python/livy/run_code.py
+python ./python/livy/delete_session.py
 ```
