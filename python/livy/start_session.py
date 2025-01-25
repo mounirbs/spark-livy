@@ -2,7 +2,7 @@
 
 # requires pip install requests
 import json, pprint, requests, textwrap
-host = 'http://livy-server:8998'
+host = 'http://localhost:8998'
 headers = {'Content-Type': 'application/json'}
 data = {'kind': 'pyspark', 'name': 'test pyspark session from python code'}
 

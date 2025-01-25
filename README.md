@@ -13,13 +13,13 @@ docker compose -f 'docker-compose.yml' up -d --build '<service_name>'
 ## Spark Submit
 **Submit a Spark job**
 ```
-spark-submit --master spark://spark-master:7077 /python/test_spark.py
-spark-submit --master spark://spark-master:7077 /python/test_pandas.py
+spark-submit --master spark://spark-master:7077 /python/spark-submit/test_spark.py
+spark-submit --master spark://spark-master:7077 /python/spark-submit/test_pandas.py
 ```
 ## Spark REST API
 **Submit a job to the Spark Cluster**
 ```
-curl -X POST http://localhost:6066/v1/submissions/create --header "Content-Type:application/json;charset=UTF-8" --data '{"appResource": "","sparkProperties": {"spark.master": "spark://spark-master:7077","spark.app.name": "TestFromRestCall"},"clientSparkVersion": "","mainClass": "org.apache.spark.deploy.SparkSubmit","environmentVariables": { },"action": "CreateSubmissionRequest","appArgs": [ "/python/test_spark.py" ]}'
+curl -X POST http://localhost:6066/v1/submissions/create --header "Content-Type:application/json;charset=UTF-8" --data '{"appResource": "","sparkProperties": {"spark.master": "spark://spark-master:7077","spark.app.name": "TestFromRestCall"},"clientSparkVersion": "","mainClass": "org.apache.spark.deploy.SparkSubmit","environmentVariables": { },"action": "CreateSubmissionRequest","appArgs": [ "/python/spark-submit/test_spark.py" ]}'
 
 {
   "action" : "CreateSubmissionResponse",
@@ -47,6 +47,7 @@ curl -X GET http://localhost:6066/v1/submissions/status/<submissionId>
 ## Apache Livy
 **Based on [Apache Livy 0.8.0-incubating - REST API](https://livy.apache.org/docs/latest/rest-api.html)**
 
+### Apache Livy REST API
 Create a Livy Session (this will return a session id(0))
 ```
 curl -X POST --data '{"kind": "pyspark", "name": "test pyspark session from python REST API"}' -H "Content-Type: application/json" localhost:8998/sessions
@@ -168,4 +169,12 @@ curl -X GET localhost:8998/sessions/0/statements/0
 Close the session id(0)
 ```
 curl localhost:8998/sessions/0 -X DELETE 
+```
+
+### Apache Livy REST API using Python Request library
+```
+python /python/livy/start_session.py
+python /python/livy/wait_for_idle.py
+python /python/livy/run_code.py
+python /python/livy/delete_session.py
 ```

@@ -3,7 +3,7 @@ USER root
 RUN install_packages curl
 
 # Install Python Dependencies
-COPY requirements.txt /opt/bitnami/   
+COPY ../python/requirements.txt /opt/bitnami/   
 RUN pip install -r /opt/bitnami/requirements.txt
 
 USER 1001

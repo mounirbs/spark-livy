@@ -14,6 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' 
+      - run: python --version      
+
       - name: Run docker-compose
         uses: hoverkraft-tech/compose-action@v2.0.1
         with:
@@ -25,11 +30,11 @@ jobs:
           
       - name: Test Spark Submit (Spark)
         run: |
-          docker compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/test_spark.py
+          docker compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/spark-submit/test_spark.py
 
       - name: Test Spark Submit (Pandas)
         run: |          
-          docker compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/test_pandas.py
+          docker compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/spark-submit/test_pandas.py
 
       - name: Test Apache Livy REST - Start Session
         run: |          
@@ -49,7 +54,7 @@ jobs:
 
       - name: Test Apache Livy Python - Start Session
         run: |          
-          docker compose exec spark-worker python /python/livy/start_session.py
+          python /python/livy/start_session.py
 
       - name: Wait for 2min to start the session
         run: |
@@ -57,8 +62,8 @@ jobs:
 
       - name: Test Apache Livy Python - Wait for Idle
         run: |          
-          docker compose exec spark-worker python /python/livy/wait_for_idle.py
+          python /python/livy/wait_for_idle.py
 
       - name: Test Apache Livy Python - Run code
         run: |          
-          docker compose exec spark-worker python /python/livy/run_code.py
+          python /python/livy/run_code.py
