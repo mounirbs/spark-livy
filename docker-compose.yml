@@ -7,7 +7,7 @@ services:
     hostname: spark-master
     environment:
       - SPARK_MODE=master
-      #- SPARK_DAEMON_MEMORY=4g
+      - SPARK_DAEMON_MEMORY=2g
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
@@ -35,8 +35,8 @@ services:
     command: ["sh", "-c", "/opt/bitnami/scripts/spark/run.sh"]
     environment:
       - SPARK_MODE=worker
-      #- SPARK_WORKER_MEMORY=4g
-      #- SPARK_WORKER_CORES=1      
+      - SPARK_WORKER_MEMORY=2g
+      - SPARK_WORKER_CORES=1      
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_RPC_AUTHENTICATION_ENABLED=no
       - SPARK_RPC_ENCRYPTION_ENABLED=no
@@ -67,11 +67,11 @@ services:
       - spark-worker
     networks:
       - sparknet
-    #deploy:
-      #resources:
-        #limits:
-          #cpus: '1'
-          #memory: 4g
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2g
 networks:
   sparknet:
     driver: bridge      

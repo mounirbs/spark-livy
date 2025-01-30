@@ -14,7 +14,7 @@ pip install -r requirements.txt
 
 ## Docker Compose
 **Start docker compose**
-```docker-compose up --scale spark-worker=1```
+```docker-compose up -d```
 
 **Start only one service**
 ```
