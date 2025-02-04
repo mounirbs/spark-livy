@@ -2,7 +2,7 @@
 
 # requires pip install requests
 import json, pprint, requests, textwrap
-host = 'http://localhost:8998'
+host = 'http://localhost:443'
 headers = {'Content-Type': 'application/json'}
 data = {'kind': 'pyspark', 'name': 'test pyspark session from python code'}
 

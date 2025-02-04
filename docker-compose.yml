@@ -1,67 +1,65 @@
-# Source: https://github.com/bitnami/containers/tree/main/bitnami/spark#readme
-
 services:
   spark-master:
-    image: bitnami/spark:3.0.0
     container_name: spark-master
     hostname: spark-master
-    environment:
-      - SPARK_MODE=master
-      - SPARK_DAEMON_MEMORY=2g
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-      - SPARK_USER=spark
-      - SPARK_MASTER_OPTS="-Dspark.master.rest.enabled=true"
-    ports:
-      # Spark UI 	
-      - '8080:8080'
-      # Spark REST API
-      - '6066:6066'
-      # Spark SUBMIT
-      - '7077:7077'
-    volumes:
-      - ./python:/python
-    networks:
-      - sparknet  
-  spark-worker:
-    #image: bitnami/spark:3.0.0
-    container_name: spark-worker
-    hostname: spark-worker
     build:
       context: ./
-      dockerfile: ./spark/Dockerfile       
-    command: ["sh", "-c", "/opt/bitnami/scripts/spark/run.sh"]
+      dockerfile: ./spark/Dockerfile
+    ports:
+      - "80:8080"
+      - "7077:7077"
+      - "6066:6066"
     environment:
-      - SPARK_MODE=worker
-      - SPARK_WORKER_MEMORY=2g
-      - SPARK_WORKER_CORES=1      
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-      - SPARK_USER=spark 
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_MASTER_WEBUI_PORT=8080
+      - SPARK_DAEMON_MEMORY=2g
+      - SPARK_MASTER_OPTS="-Dspark.master.rest.enabled=true"
+      - PYSPARK_PYTHON=python3
+    entrypoint: 
+      - "bash"
+      - "-c"
+      - "/opt/spark/sbin/start-master.sh && tail -f /dev/null"
     volumes:
+      - ./data:/opt/spark/work-dir/spark-warehouse/data:rw
       - ./python:/python
-    depends_on:
-      - spark-master      
     networks:
       - sparknet
+
+  spark-worker:
+    # reuse the image built for the spark-master
+    image: spark-livy-spark-master
+    container_name: spark-worker
+    hostname: spark-worker
+    environment:
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=2g
+      - PYSPARK_PYTHON=python3
+    depends_on:
+      - spark-master
+    entrypoint:
+      - "bash" 
+      - "-c"
+      - "/opt/spark/sbin/start-worker.sh spark://spark-master:7077 && tail -f /dev/null"
+    volumes:
+      - ./data:/opt/spark/work-dir/spark-warehouse/data:rw
+      - ./python:/python
+    networks:
+      - sparknet
+
   livy:
     container_name: livy-server
     hostname: livy-server
     build: ./livy-server/
-    command: ["sh", "-c", "/opt/bitnami/livy/bin/livy-server"]
+    command: ["sh", "-c", "/opt/livy/bin/livy-server"]
     user: root
     volumes:
-      - ./livy-server/conf/:/opt/bitnami/livy/conf/       
+      - ./livy-server/conf/:/opt/livy/conf/       
       - ./livy-server/target/:/target/        
       - ./livy-server/data/:/data/       
-      - ./livy-server/logs/:/opt/bitnami/livy/logs/               
+      - ./livy-server/logs/:/opt/livy/logs/
     ports:
-      - '8998:8998'
+      - '443:8998'
     depends_on:
       - spark-master
       - spark-worker
@@ -72,6 +70,7 @@ services:
         limits:
           cpus: '1'
           memory: 2g
+
 networks:
   sparknet:
-    driver: bridge      
+    driver: bridge

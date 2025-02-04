@@ -1,13 +1,24 @@
-FROM bitnami/spark:3.0.0
+# https://github.com/apache/spark-docker/tree/master
+# https://hub.docker.com/_/spark/tags
+# Simulating Microsoft Fabric Runtime 1.3(with Apache Livy), Spark 3.5, Java 11
+FROM spark:3.5.4-python3
 USER root
-RUN install_packages curl python
+RUN apt-get update && apt-get install -y curl
 
 # Install Python Dependencies
-COPY requirements.txt /opt/bitnami/   
-RUN pip install -r /opt/bitnami/requirements.txt
+COPY ./requirements.txt /opt/   
+RUN pip install -r /opt/requirements.txt
 
-USER 1001
+# Apache Livy exception using Java 17 
+# Exception in thread "main" java.util.concurrent.ExecutionException: javax.security.sasl.SaslException: Client closed before SASL negotiation finished.
 
-#RUN rm -r /opt/bitnami/spark/jars && \
-    #curl --location https://dlcdn.apache.org/spark/spark-3.0.0/spark-3.0.0-bin-hadoop3.tgz | \
-    #tar --extract --gzip --strip=1 --directory /opt/bitnami/spark/ spark-3.0.0-bin-hadoop3/jars/
+# Using Java 11
+# https://jdk.java.net/archive/
+WORKDIR /opt/java/
+RUN curl "https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz" -o openjdk-update.tar.gz \
+    && tar -xzf "openjdk-update.tar.gz" \
+    && rm -rf openjdk openjdk-update.tar.gz \
+    && mv jdk-* openjdk
+
+#USER 1001
+USER spark

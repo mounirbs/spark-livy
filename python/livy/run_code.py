@@ -1,7 +1,7 @@
 import json, pprint, requests, textwrap
-host = 'http://localhost:8998'
+host = 'http://localhost:443'
 headers = {'Content-Type': 'application/json'}
-statements_url = host + '/sessions/1/statements'
+statements_url = host + '/sessions/0/statements'
 
 data = {
   'code': textwrap.dedent("""

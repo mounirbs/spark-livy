@@ -1,11 +1,11 @@
 #https://github.com/apache/incubator-livy?tab=readme-ov-file#building-livy
-#FROM docker.io/bitnami/spark:2.4.5
-FROM docker.io/bitnami/spark:3.0.0
+# Reuse the same image built for Spark Master/Worker
+FROM spark-livy-spark-master
 USER root
-ENV LIVY_HOME /opt/bitnami/livy
-WORKDIR /opt/bitnami/
+ENV LIVY_HOME /opt/livy
+WORKDIR /opti/
 
-RUN install_packages unzip curl \
+RUN apt-get update && apt-get install -y unzip \
     && curl "https://downloads.apache.org/incubator/livy/0.8.0-incubating/apache-livy-0.8.0-incubating_2.12-bin.zip" -O \
     && unzip "apache-livy-0.8.0-incubating_2.12-bin" \
     && rm -rf "apache-livy-0.8.0-incubating_2.12-bin.zip" \
