@@ -138,12 +138,27 @@ curl -X GET localhost:8998/sessions/0
 }
 ```
 
-Execute a PySpark code on the idle session id(0). This will return a statement id(0)
+initiate PySpark a statement id(0)
+```
+curl -X POST -H 'Content-Type: application/json' -d'{"code":"from py4j.java_gateway import java_import\njava_import(spark._sc._jvm, \"org.apache.spark.sql.api.python.*\")"}' localhost:8998/sessions/0/statements
+
+{
+   "id":0,
+   "code":"from py4j.java_gateway import java_import\njava_import(spark._sc._jvm, \"org.apache.spark.sql.api.python.*\")",
+   "state":"waiting",
+   "output":null,
+   "progress":0.0,
+   "started":0,
+   "completed":0
+}
+```
+
+Execute a PySpark code on the idle session id(0). This will return a statement id(1)
 ```
 curl -X POST -H 'Content-Type: application/json' -d'{"code":"spark.createDataFrame([{\"id\": 1, \"name\": \"Mounir\"}]).show()"}' localhost:8998/sessions/0/statements
 
 {
-   "id":0,
+   "id":1,
    "code":"spark.createDataFrame([{\"id\": 1, \"name\": \"Mounir\"}]).show()",
    "state":"running",
    "output":null,
@@ -152,12 +167,12 @@ curl -X POST -H 'Content-Type: application/json' -d'{"code":"spark.createDataFra
    "completed":0
 }
 ```
-Check the statement id(0) on the session id(0)
+Check the statement id(1) on the session id(0)
 ```
-curl -X GET localhost:8998/sessions/0/statements/0
+curl -X GET localhost:8998/sessions/0/statements/1
 
 {
-   "id":0,
+   "id":1,
    "code":"spark.createDataFrame([{\"id\": 1, \"name\": \"Mounir\"}]).show()",
    "state":"available",
    "output":{
@@ -185,6 +200,7 @@ curl localhost:8998/sessions/0 -X DELETE 
 ```
 python ./python/livy/start_session.py
 python ./python/livy/wait_for_idle.py
+python ./python/livy/init_java_gateway.py
 python ./python/livy/run_code.py
 python ./python/livy/delete_session.py
 ```

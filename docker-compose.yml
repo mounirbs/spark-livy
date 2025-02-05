@@ -50,6 +50,8 @@ services:
   livy:
     container_name: livy-server
     hostname: livy-server
+    environment:
+      - PYSPARK_PYTHON=python3
     build: ./livy-server/
     command: ["sh", "-c", "/opt/livy/bin/livy-server"]
     user: root

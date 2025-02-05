@@ -12,10 +12,10 @@ RUN pip install -r /opt/requirements.txt
 # Apache Livy exception using Java 17 
 # Exception in thread "main" java.util.concurrent.ExecutionException: javax.security.sasl.SaslException: Client closed before SASL negotiation finished.
 
-# Using Java 11
+# Using Java 15
 # https://jdk.java.net/archive/
 WORKDIR /opt/java/
-RUN curl "https://download.java.net/java/ga/jdk11/openjdk-11_linux-x64_bin.tar.gz" -o openjdk-update.tar.gz \
+RUN curl "https://download.java.net/java/GA/jdk15.0.2/0d1cfde4252546c6931946de8db48ee2/7/GPL/openjdk-15.0.2_linux-x64_bin.tar.gz" -o openjdk-update.tar.gz \
     && tar -xzf "openjdk-update.tar.gz" \
     && rm -rf openjdk openjdk-update.tar.gz \
     && mv jdk-* openjdk
