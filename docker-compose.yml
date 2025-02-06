@@ -5,8 +5,9 @@ services:
     build:
       context: ./
       dockerfile: ./spark/Dockerfile
+    image: mounirbs/spark-python3-java11:3.5.4
     ports:
-      - "80:8080"
+      - "8080:8080"
       - "7077:7077"
       - "6066:6066"
     environment:
@@ -28,7 +29,7 @@ services:
 
   spark-worker:
     # reuse the image built for the spark-master
-    image: spark-livy-spark-master
+    image: mounirbs/spark-python3-java11:3.5.4
     container_name: spark-worker
     hostname: spark-worker
     environment:
@@ -53,6 +54,7 @@ services:
     environment:
       - PYSPARK_PYTHON=python3
     build: ./livy-server/
+    image: mounirbs/livy-spark3.5.4-python3-java11:0.8
     command: ["sh", "-c", "/opt/livy/bin/livy-server"]
     user: root
     volumes:
@@ -60,8 +62,9 @@ services:
       - ./livy-server/target/:/target/        
       - ./livy-server/data/:/data/       
       - ./livy-server/logs/:/opt/livy/logs/
+      - ./livy-server/spark/conf/:/opt/spark/conf/
     ports:
-      - '443:8998'
+      - '8998:8998'
     depends_on:
       - spark-master
       - spark-worker

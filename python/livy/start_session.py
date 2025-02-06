@@ -2,9 +2,9 @@
 
 # requires pip install requests
 import json, pprint, requests, textwrap
-host = 'http://localhost:443'
+host = 'http://localhost:8998'
 headers = {'Content-Type': 'application/json'}
-data = {'kind': 'pyspark', 'name': 'test pyspark session from python code'}
+data = {'kind': 'pyspark', 'name': 'test pyspark session from python code', 'proxyUser': 'Mounir'}
 
 r = requests.post(host + '/sessions', data=json.dumps(data), headers=headers)
 pprint.pprint(r.json())

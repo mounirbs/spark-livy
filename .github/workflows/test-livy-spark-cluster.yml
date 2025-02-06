@@ -47,9 +47,13 @@ jobs:
         run: |
           sleep 120s
           
+      - name: Test Apache Livy REST - Init PySpark
+        run: |
+          curl -X POST -H 'Content-Type: application/json' -d'{"code":"from py4j.java_gateway import java_import\njava_import(spark._sc._jvm, \"org.apache.spark.sql.api.python.*\")"}' localhost:8998/sessions/0/statements
+
       - name: Test Apache Livy REST - Run code
         run: |
-          curl localhost:8998/sessions/0/statements -X POST -H 'Content-Type: application/json' -d'{"code":"spark.createDataFrame([{\"id\": 1, \"name\": \"Mounir\"}]).show()"}' 
+          curl -X POST -H 'Content-Type: application/json' -d'{"code":"spark.createDataFrame([{\"id\": 1, \"name\": \"Mounir\"}]).show()"}' localhost:8998/sessions/0/statements
 
       - name: Test Apache Livy REST - Check statement
         run: |
@@ -67,6 +71,15 @@ jobs:
         run: |          
           python ./python/livy/wait_for_idle.py
 
+      - name: Test Apache Livy Python - Init PySpark
+        run: |
+          python ./python/livy/init_java_gateway.py
+
       - name: Test Apache Livy Python - Run code
         run: |          
           python ./python/livy/run_code.py
+
+      - name: Test Apache Livy Python - Run code from external file
+        run: |
+          cd ./python/livy
+          python ./python/livy/run_code_external_file.py
