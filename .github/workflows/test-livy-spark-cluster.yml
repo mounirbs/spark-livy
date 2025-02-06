@@ -33,11 +33,11 @@ jobs:
           
       - name: Test Spark Submit (Spark)
         run: |
-          docker compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/spark-submit/test_spark.py
+          docker compose exec spark-worker /opt/spark/bin/spark-submit --master spark://spark-master:7077 /python/spark-submit/test_spark.py
 
       - name: Test Spark Submit (Pandas)
         run: |          
-          docker compose exec spark-worker spark-submit --master spark://spark-master:7077 /python/spark-submit/test_pandas.py
+          docker compose exec spark-worker /opt/spark/bin/spark-submit --master spark://spark-master:7077 /python/spark-submit/test_pandas.py
 
       - name: Test Apache Livy REST - Start Session
         run: |          
