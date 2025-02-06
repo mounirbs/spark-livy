@@ -82,4 +82,4 @@ jobs:
       - name: Test Apache Livy Python - Run code from external file
         run: |
           cd ./python/livy
-          python ./python/livy/run_code_external_file.py
+          python ./run_code_external_file.py
