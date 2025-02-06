@@ -3,12 +3,13 @@ host = 'http://localhost:8998'
 headers = {'Content-Type': 'application/json'}
 statements_url = host + '/sessions/1/statements'
 
-data = {
-  'code': textwrap.dedent("""
-    df = spark.createDataFrame([{"id": 1, "name": "Mounir"}])
+external_python_file = './src/external_file.py'
 
-    df.show()
-    """)
+with open(external_python_file, 'r') as file:
+    pyspark_code = file.read()
+
+data = {
+        'code': pyspark_code
 }
 
 r = requests.post(statements_url, data=json.dumps(data), headers=headers)
