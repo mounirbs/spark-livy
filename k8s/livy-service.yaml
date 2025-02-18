@@ -11,8 +11,8 @@ metadata:
   name: livy
 spec:
   ports:
-  - name: "443"
-    port: 443
+  - name: "8998"
+    port: 8998
     targetPort: 8998
   selector:
     io.kompose.service: livy
