@@ -202,3 +202,7 @@ python ./python/livy/run_code.py
 python ./python/livy/run_code_external_file.py
 python ./python/livy/delete_session.py
 ```
+## Convert docker-compose to Helm charset
+```
+kompose --file docker-compose.yml convert -o k8s
+```

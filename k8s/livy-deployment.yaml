@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: /snap/kompose/19/kompose-linux-amd64 --file docker-compose.yml convert
+      -o k8s
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: livy
+  name: livy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: livy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: /snap/kompose/19/kompose-linux-amd64 --file docker-compose.yml
+          convert -o k8s
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/sparknet: "true"
+        io.kompose.service: livy
+    spec:
+      containers:
+      - args:
+        - sh
+        - -c
+        - /opt/livy/bin/livy-server
+        env:
+        - name: PYSPARK_PYTHON
+          value: python3
+        image: mounirbs/livy-spark3.5.4-python3-java11:0.8
+        imagePullPolicy: ""
+        name: livy-server
+        ports:
+        - containerPort: 8998
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2147483648"
+        volumeMounts:
+        - mountPath: /opt/livy/conf/
+          name: livy-claim0
+        - mountPath: /target/
+          name: livy-claim1
+        - mountPath: /data/
+          name: livy-claim2
+        - mountPath: /opt/livy/logs/
+          name: livy-claim3
+        - mountPath: /opt/spark/conf/
+          name: livy-claim4
+      hostname: livy-server
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: livy-claim0
+        persistentVolumeClaim:
+          claimName: livy-claim0
+      - name: livy-claim1
+        persistentVolumeClaim:
+          claimName: livy-claim1
+      - name: livy-claim2
+        persistentVolumeClaim:
+          claimName: livy-claim2
+      - name: livy-claim3
+        persistentVolumeClaim:
+          claimName: livy-claim3
+      - name: livy-claim4
+        persistentVolumeClaim:
+          claimName: livy-claim4
+status: {}
