@@ -7,9 +7,12 @@ services:
       dockerfile: ./spark/Dockerfile
     image: mounirbs/spark-python3-java11:3.5.4
     ports:
-      - "8080:8080"
+      - "80:8080"
       - "7077:7077"
       - "6066:6066"
+    labels:
+      kompose.service.expose: true
+      kompose.service.type: nodeport
     environment:
       - SPARK_MASTER_HOST=spark-master
       - SPARK_MASTER_PORT=7077
@@ -22,10 +25,7 @@ services:
       - "-c"
       - "/opt/spark/sbin/start-master.sh && tail -f /dev/null"
     volumes:
-      - ./data:/opt/spark/work-dir/spark-warehouse/data:rw
       - ./python:/python
-    networks:
-      - sparknet
 
   spark-worker:
     # reuse the image built for the spark-master
@@ -43,10 +43,7 @@ services:
       - "-c"
       - "/opt/spark/sbin/start-worker.sh spark://spark-master:7077 && tail -f /dev/null"
     volumes:
-      - ./data:/opt/spark/work-dir/spark-warehouse/data:rw
       - ./python:/python
-    networks:
-      - sparknet
 
   livy:
     container_name: livy-server
@@ -59,23 +56,18 @@ services:
     user: root
     volumes:
       - ./livy-server/conf/:/opt/livy/conf/       
-      - ./livy-server/target/:/target/        
-      - ./livy-server/data/:/data/       
-      - ./livy-server/logs/:/opt/livy/logs/
       - ./livy-server/spark/conf/:/opt/spark/conf/
     ports:
-      - '8998:8998'
+      - '443:8998'
+    labels:
+      kompose.service.expose: true
+      kompose.service.type: nodeport
     depends_on:
       - spark-master
       - spark-worker
-    networks:
-      - sparknet
+    
     deploy:
       resources:
         limits:
           cpus: '1'
           memory: 2g
-
-networks:
-  sparknet:
-    driver: bridge

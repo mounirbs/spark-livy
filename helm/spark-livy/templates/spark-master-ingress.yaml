@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spark-master
+  namespace: {{ .Values.metadata.namespace }}
+spec:
+  rules:
+    - http:
+        paths:
+          - backend:
+              service:
+                name: spark-master
+                port:
+                  number: {{ .Values.sparkMaster.sparkMasterWebuiPort }}
+            path: /
+            pathType: Prefix

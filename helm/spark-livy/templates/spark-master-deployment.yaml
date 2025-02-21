@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-master
+  namespace: {{ .Values.metadata.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: spark-master
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: spark-master
+    spec:
+      containers:
+        - command:
+            - bash
+            - -c
+            - /opt/spark/sbin/start-master.sh && tail -f /dev/null
+          env:
+            - name: PYSPARK_PYTHON
+              value: python3
+            - name: SPARK_DAEMON_MEMORY
+              value: "{{ .Values.sparkMaster.sparkDaemonMemory }}"
+            - name: SPARK_MASTER_HOST
+              value: spark-master
+            - name: SPARK_MASTER_OPTS
+              value: '"-Dspark.master.rest.enabled=true"'
+            - name: SPARK_MASTER_PORT
+              value: "{{ .Values.sparkMaster.targetSparkMasterPort }}"
+            - name: SPARK_MASTER_WEBUI_PORT
+              value: "{{ .Values.sparkMaster.targetSparkMasterWebuiPort }}"
+          image: {{ .Values.sparkMaster.image }}
+          name: spark-master
+          ports:
+            - containerPort: {{ .Values.sparkMaster.targetSparkMasterWebuiPort }}
+              protocol: TCP
+            - containerPort: {{ .Values.sparkMaster.targetSparkMasterPort }}
+              protocol: TCP
+            - containerPort: {{ .Values.sparkMaster.targetSparkRestPort }}
+              protocol: TCP
+      hostname: spark-master
+      restartPolicy: Always

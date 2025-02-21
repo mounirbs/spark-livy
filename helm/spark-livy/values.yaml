@@ -1,0 +1,26 @@
+metadata:
+  namespace: spark-livy
+general:
+  serviceType: NodePort
+sparkMaster:
+  sparkDaemonMemory: 2g
+  sparkDriverMemory: 2g
+  targetSparkMasterPort: 7077
+  targetSparkMasterWebuiPort: 8080	
+  targetSparkRestPort: 6066
+  sparkMasterPort: 7077
+  sparkMasterWebuiPort: 80	
+  sparkRestPort: 6066
+  image: mounirbs/spark-python3-java11:3.5.4
+sparkWorker:
+  sparkWorkerCores: 1
+  sparkWorkerMemory: 2g
+  image: mounirbs/spark-python3-java11:3.5.4
+apacheLivy:
+  cpu: 1
+  memory: 2147483648
+  livyPort: 443
+  targetLivyPort: 8998
+  image: mounirbs/livy-spark3.5.4-python3-java11:0.8
+  #TRACE, DEBUG, INFO, WARN, or ERROR
+  logging: ERROR

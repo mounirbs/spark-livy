@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: livy
+  namespace: {{ .Values.metadata.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: livy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: livy
+    spec:
+      containers:
+        - args:
+            - sh
+            - -c
+            - /opt/livy/bin/livy-server
+          env:
+            - name: PYSPARK_PYTHON
+              value: python3
+          image: {{ .Values.apacheLivy.image }}
+          name: livy-server
+          ports:
+            - containerPort: {{ .Values.apacheLivy.targetLivyPort }}
+              protocol: TCP
+          resources:
+            limits:
+              cpu: "{{ .Values.apacheLivy.cpu }}"
+              memory: "{{ .Values.apacheLivy.memory }}"
+          volumeMounts:
+            - mountPath: /opt/livy/conf
+              name: livy-configs
+            - mountPath: /opt/spark/conf
+              name: spark-configs
+      hostname: livy-server
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            name: livyConfigs
+          name: livyConfigs
+        - configMap:
+            name: sparkConfigs
+          name: sparkConfigs
