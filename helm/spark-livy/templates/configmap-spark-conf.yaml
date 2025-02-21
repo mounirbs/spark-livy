@@ -22,7 +22,7 @@ data:
     # This is useful for setting default environmental settings.
 
     # Example:
-    spark.master                     spark://spark-master:{{ .Values.sparkMaster.TARGET_SPARK_MASTER_PORT }}
+    spark.master                     spark://spark-master:{{ .Values.sparkMaster.sparkMasterPort }}
     # spark.eventLog.enabled           true
     # spark.eventLog.dir               hdfs://namenode:8021/directory
     # spark.serializer                 org.apache.spark.serializer.KryoSerializer
