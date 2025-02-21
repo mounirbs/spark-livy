@@ -18,4 +18,4 @@ spec:
       targetPort: {{ .Values.sparkMaster.targetSparkRestPort }}
   selector:
     name: spark-master
-  type: {{ .Values.sparkMaster.serviceType }}
+  type: {{ .Values.general.serviceType }}
