@@ -206,6 +206,7 @@ python ./python/livy/delete_session.py
 ```
 kompose --file docker-compose.yml convert -o helm -c
 ```
+Some adjustments/cleaning was done on the helm chart created by kompose.
 
 ## Helm
 ```
