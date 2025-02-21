@@ -216,9 +216,7 @@ kubectl create namespace spark-livy
 
 helm install -n spark-livy spark-livy helm/spark-livy-0.0.1.tgz
 
-helm delete spark-livy
-
 kubectl -n spark-livy get all
 
-helm -n spark-livy delete spark-livy
+helm uninstall spark-livy -n spark-livy
 ```

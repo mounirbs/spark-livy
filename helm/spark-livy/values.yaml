@@ -2,7 +2,7 @@ metadata:
   namespace: spark-livy
 general:
   #ClusterIP, NodePort, LoadBalancer
-  serviceType: NodePort
+  serviceType: ClusterIP
 sparkMaster:
   sparkDaemonMemory: 2g
   sparkDriverMemory: 2g
