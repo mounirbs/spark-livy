@@ -41,8 +41,8 @@ spec:
       restartPolicy: Always
       volumes:
         - configMap:
-            name: livyConfigs
-          name: livyConfigs
+            name: livy-configs
+          name: livy-configs
         - configMap:
-            name: sparkConfigs
-          name: sparkConfigs
+            name: spark-configs
+          name: spark-configs
