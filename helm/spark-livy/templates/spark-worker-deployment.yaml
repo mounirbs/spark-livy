@@ -3,17 +3,19 @@ kind: Deployment
 metadata:
   name: spark-worker
   namespace: {{ .Values.metadata.namespace }}
+  labels:
+    role: worker
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: spark-worker
+      role: worker
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        name: spark-worker
+        role: worker
     spec:
       containers:
         - command:
@@ -29,5 +31,12 @@ spec:
               value: {{ .Values.sparkWorker.sparkWorkerMemory }}
           image: {{ .Values.sparkWorker.image }}
           name: spark-worker
+          ports:
+            - containerPort: {{ .Values.sparkWorker.targetSparkWorkerWebuiPort }}
+              protocol: TCP
+          resources:
+            limits:
+              cpu: "{{ .Values.sparkWorker.limits.cpu }}"
+              memory: "{{ .Values.sparkWorker.limits.memory }}"
       hostname: spark-worker
       restartPolicy: Always

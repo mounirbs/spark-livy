@@ -1,15 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: livy
+  name: apache-livy
   namespace: {{ .Values.metadata.namespace }}
   labels:
-    name: livy
+    role: livy
 spec:
   ports:
     - name: "{{ .Values.apacheLivy.livyPort }}"
       port: {{ .Values.apacheLivy.livyPort }}
       targetPort: {{ .Values.apacheLivy.targetLivyPort }}
   selector:
-    name: livy
+    role: livy
   type: {{ .Values.general.serviceType }}

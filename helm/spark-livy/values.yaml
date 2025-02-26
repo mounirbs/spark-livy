@@ -4,23 +4,34 @@ general:
   #ClusterIP, NodePort, LoadBalancer
   serviceType: ClusterIP
 sparkMaster:
+  limits:
+    cpu: 1
+    memory: 2147483648
   sparkDaemonMemory: 2g
   sparkDriverMemory: 2g
+  # Target ports: port on the pod(s) to forward traffic to
+  # ports: ports of this service
   targetSparkMasterPort: 7077
   targetSparkMasterWebuiPort: 8080	
   targetSparkRestPort: 6066
   sparkMasterPort: 7077
-  sparkMasterWebuiPort: 80	
+  sparkMasterWebuiPort: 8080	
   sparkRestPort: 6066
   image: mounirbs/spark-python3-java11:3.5.4
 sparkWorker:
+  limits:
+    cpu: 1
+    memory: 2147483648
   sparkWorkerCores: 1
   sparkWorkerMemory: 2g
+  targetSparkWorkerWebuiPort: 8081
+  sparkWorkerWebuiPort: 8081
   image: mounirbs/spark-python3-java11:3.5.4
 apacheLivy:
-  cpu: 1
-  memory: 2147483648
-  livyPort: 443
+  limits:
+    cpu: 1
+    memory: 2147483648
+  livyPort: 8998
   targetLivyPort: 8998
   image: mounirbs/livy-spark3.5.4-python3-java11:0.8
   #TRACE, DEBUG, INFO, WARN, or ERROR

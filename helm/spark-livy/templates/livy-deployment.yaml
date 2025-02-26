@@ -1,19 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: livy
+  name: apache-livy
   namespace: {{ .Values.metadata.namespace }}
+  labels:
+    role: livy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: livy
+      role: livy
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        name: livy
+        role: livy
     spec:
       containers:
         - args:
@@ -30,8 +32,8 @@ spec:
               protocol: TCP
           resources:
             limits:
-              cpu: "{{ .Values.apacheLivy.cpu }}"
-              memory: "{{ .Values.apacheLivy.memory }}"
+              cpu: "{{ .Values.apacheLivy.limits.cpu }}"
+              memory: "{{ .Values.apacheLivy.limits.memory }}"
           volumeMounts:
             - mountPath: /opt/livy/conf
               name: livy-configs

@@ -3,16 +3,15 @@ kind: Ingress
 metadata:
   name: spark-master-ingress
   namespace: {{ .Values.metadata.namespace }}
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-    - http:
-        paths:
-          - backend:
-              service:
-                name: spark-master
-                port:
-                  number: {{ .Values.sparkMaster.sparkMasterWebuiPort }}
-            path: /
-            pathType: Prefix
+  - host: mounir.eastus.cloudapp.azure.com
+    http:
+      paths:
+      - path: /spark
+        pathType: Prefix
+        backend:
+          service:
+            name: spark-master
+            port:
+              number: {{ .Values.sparkMaster.sparkMasterWebuiPort }}

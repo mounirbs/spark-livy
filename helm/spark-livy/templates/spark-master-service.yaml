@@ -4,7 +4,7 @@ metadata:
   name: spark-master
   namespace: {{ .Values.metadata.namespace }}
   labels:
-    name: spark-master
+    role: master
 spec:
   ports:
     - name: "{{ .Values.sparkMaster.sparkMasterWebuiPort }}"
@@ -17,5 +17,5 @@ spec:
       port: {{ .Values.sparkMaster.sparkRestPort }}
       targetPort: {{ .Values.sparkMaster.targetSparkRestPort }}
   selector:
-    name: spark-master
+    role: master
   type: {{ .Values.general.serviceType }}

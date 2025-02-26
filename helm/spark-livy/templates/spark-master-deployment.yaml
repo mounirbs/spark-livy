@@ -3,17 +3,19 @@ kind: Deployment
 metadata:
   name: spark-master
   namespace: {{ .Values.metadata.namespace }}
+  labels:
+    role: master
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: spark-master
+      role: master
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        name: spark-master
+        role: master
     spec:
       containers:
         - command:
@@ -42,5 +44,9 @@ spec:
               protocol: TCP
             - containerPort: {{ .Values.sparkMaster.targetSparkRestPort }}
               protocol: TCP
+          resources:
+            limits:
+              cpu: "{{ .Values.sparkMaster.limits.cpu }}"
+              memory: "{{ .Values.sparkMaster.limits.memory }}"
       hostname: spark-master
       restartPolicy: Always
