@@ -5,11 +5,6 @@ general:
   #ClusterIP is supported. Requires also Headless Services (https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)
   serviceType: ClusterIP
 sparkMaster:
-  limits:
-    cpu: 1
-    memory: 2147483648
-  sparkDaemonMemory: 2g
-  sparkDriverMemory: 2g
   # Target ports: port on the pod(s) to forward traffic to
   # ports: ports of this service
   targetSparkMasterPort: 7077
@@ -20,18 +15,13 @@ sparkMaster:
   sparkRestPort: 6066
   image: mounirbs/spark-python3-java11:3.5.4
 sparkWorker:
-  limits:
-    cpu: 1
-    memory: 2147483648
   sparkWorkerCores: 1
-  sparkWorkerMemory: 2g
+  sparkWorkerMemory: 4g
   targetSparkWorkerWebuiPort: 8081
   sparkWorkerWebuiPort: 8081
   image: mounirbs/spark-python3-java11:3.5.4
 apacheLivy:
-  limits:
-    cpu: 1
-    memory: 2147483648
+  sparkDriverMemory: 2g
   livyPort: 8998
   targetLivyPort: 8998
   image: mounirbs/livy-spark3.5.4-python3-java11:0.8

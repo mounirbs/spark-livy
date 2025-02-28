@@ -25,8 +25,6 @@ spec:
           env:
             - name: PYSPARK_PYTHON
               value: python3
-            - name: SPARK_DAEMON_MEMORY
-              value: "{{ .Values.sparkMaster.sparkDaemonMemory }}"
             - name: SPARK_MASTER_HOST
               value: spark-master
             - name: SPARK_MASTER_OPTS
@@ -44,9 +42,5 @@ spec:
               protocol: TCP
             - containerPort: {{ .Values.sparkMaster.targetSparkRestPort }}
               protocol: TCP
-          resources:
-            limits:
-              cpu: "{{ .Values.sparkMaster.limits.cpu }}"
-              memory: "{{ .Values.sparkMaster.limits.memory }}"
       hostname: spark-master
       restartPolicy: Always

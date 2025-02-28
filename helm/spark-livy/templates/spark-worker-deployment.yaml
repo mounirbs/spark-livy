@@ -34,9 +34,5 @@ spec:
           ports:
             - containerPort: {{ .Values.sparkWorker.targetSparkWorkerWebuiPort }}
               protocol: TCP
-          resources:
-            limits:
-              cpu: "{{ .Values.sparkWorker.limits.cpu }}"
-              memory: "{{ .Values.sparkWorker.limits.memory }}"
       hostname: spark-worker
       restartPolicy: Always

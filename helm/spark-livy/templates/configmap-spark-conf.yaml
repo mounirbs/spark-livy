@@ -32,7 +32,7 @@ data:
     # spark.eventLog.enabled           true
     # spark.eventLog.dir               hdfs://namenode:8021/directory
     # spark.serializer                 org.apache.spark.serializer.KryoSerializer
-    spark.driver.memory               {{ .Values.sparkMaster.sparkDriverMemory }}
+    spark.driver.memory               {{ .Values.apacheLivy.sparkDriverMemory }}
     # spark.executor.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
 kind: ConfigMap
 metadata:
