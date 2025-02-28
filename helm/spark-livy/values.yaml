@@ -2,6 +2,7 @@ metadata:
   namespace: spark-livy
 general:
   #ClusterIP, NodePort, LoadBalancer
+  #ClusterIP is supported. Requires also Headless Services (https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)
   serviceType: ClusterIP
 sparkMaster:
   limits:

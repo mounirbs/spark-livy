@@ -23,6 +23,12 @@ data:
 
     # Example:
     spark.master                     spark://spark-master:{{ .Values.sparkMaster.sparkMasterPort }}
+    
+    #https://spark.apache.org/docs/latest/running-on-kubernetes.html#client-mode-networking
+    #https://kubernetes.io/docs/concepts/services-networking/service/#headless-services
+    spark.driver.host                apache-livy
+    #spark.driver.host
+    
     # spark.eventLog.enabled           true
     # spark.eventLog.dir               hdfs://namenode:8021/directory
     # spark.serializer                 org.apache.spark.serializer.KryoSerializer

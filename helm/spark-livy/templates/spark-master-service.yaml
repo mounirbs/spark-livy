@@ -19,3 +19,4 @@ spec:
   selector:
     role: master
   type: {{ .Values.general.serviceType }}
+  clusterIP: None

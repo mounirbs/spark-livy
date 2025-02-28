@@ -13,3 +13,4 @@ spec:
   selector:
     role: worker
   type: {{ .Values.general.serviceType }}
+  clusterIP: None

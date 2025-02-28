@@ -13,3 +13,4 @@ spec:
   selector:
     role: livy
   type: {{ .Values.general.serviceType }}
+  clusterIP: None
