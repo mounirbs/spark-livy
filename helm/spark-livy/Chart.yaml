@@ -1,0 +1,9 @@
+apiVersion: v2
+name: spark-livy
+description: A generated Helm Chart for helm/spark-livy from Skippbox Kompose
+version: 0.0.1
+appVersion: "v_1.1.0_spark_3.5.4"
+keywords:
+  - helm/spark-livy
+sources:
+home:

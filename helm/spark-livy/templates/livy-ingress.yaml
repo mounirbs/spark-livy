@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apache-livy-ingress
+  namespace: {{ .Values.metadata.namespace }}
+spec:
+ rules:
+  - host: mounir.eastus.cloudapp.azure.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: apache-livy
+            port:
+              number: {{ .Values.apacheLivy.livyPort }}

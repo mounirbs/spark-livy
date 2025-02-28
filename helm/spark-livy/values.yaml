@@ -1,0 +1,29 @@
+metadata:
+  namespace: spark-livy
+general:
+  #ClusterIP, NodePort, LoadBalancer
+  #ClusterIP is supported. Requires also Headless Services (https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)
+  serviceType: ClusterIP
+sparkMaster:
+  # Target ports: port on the pod(s) to forward traffic to
+  # ports: ports of this service
+  targetSparkMasterPort: 7077
+  targetSparkMasterWebuiPort: 8080	
+  targetSparkRestPort: 6066
+  sparkMasterPort: 7077
+  sparkMasterWebuiPort: 8080	
+  sparkRestPort: 6066
+  image: mounirbs/spark-python3-java11:3.5.4
+sparkWorker:
+  sparkWorkerCores: 1
+  sparkWorkerMemory: 4g
+  targetSparkWorkerWebuiPort: 8081
+  sparkWorkerWebuiPort: 8081
+  image: mounirbs/spark-python3-java11:3.5.4
+apacheLivy:
+  sparkDriverMemory: 2g
+  livyPort: 8998
+  targetLivyPort: 8998
+  image: mounirbs/livy-spark3.5.4-python3-java11:0.8
+  #TRACE, DEBUG, INFO, WARN, or ERROR
+  logging: ERROR

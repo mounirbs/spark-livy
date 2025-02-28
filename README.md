@@ -202,3 +202,21 @@ python ./python/livy/run_code.py
 python ./python/livy/run_code_external_file.py
 python ./python/livy/delete_session.py
 ```
+## Convert docker-compose to Helm chart
+```
+kompose --file docker-compose.yml convert -o helm -c
+```
+Some adjustments/cleaning was done on the helm chart created by kompose.
+
+## Helm
+```
+helm package helm/spark-livy -d helm/
+
+kubectl create namespace spark-livy
+
+helm install -n spark-livy spark-livy helm/spark-livy-0.0.1.tgz
+
+kubectl -n spark-livy get all
+
+helm uninstall spark-livy -n spark-livy
+```

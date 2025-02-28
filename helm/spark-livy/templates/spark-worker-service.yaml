@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: worker
+  namespace: {{ .Values.metadata.namespace }}
+  labels:
+    role: worker
+spec:
+  ports:
+    - name: "{{ .Values.sparkWorker.sparkWorkerWebuiPort }}"
+      port: {{ .Values.sparkWorker.sparkWorkerWebuiPort }}
+      targetPort: {{ .Values.sparkWorker.targetSparkWorkerWebuiPort }}
+  selector:
+    role: worker
+  type: {{ .Values.general.serviceType }}
+  clusterIP: None

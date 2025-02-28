@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-worker
+  namespace: {{ .Values.metadata.namespace }}
+  labels:
+    role: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: worker
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        role: worker
+    spec:
+      containers:
+        - command:
+            - bash
+            - -c
+            - /opt/spark/sbin/start-worker.sh spark://spark-master:{{ .Values.sparkMaster.targetSparkMasterPort }} && tail -f /dev/null
+          env:
+            - name: PYSPARK_PYTHON
+              value: python3
+            - name: SPARK_WORKER_CORES
+              value: "{{ .Values.sparkWorker.sparkWorkerCores }}"
+            - name: SPARK_WORKER_MEMORY
+              value: {{ .Values.sparkWorker.sparkWorkerMemory }}
+          image: {{ .Values.sparkWorker.image }}
+          name: spark-worker
+          ports:
+            - containerPort: {{ .Values.sparkWorker.targetSparkWorkerWebuiPort }}
+              protocol: TCP
+      hostname: spark-worker
+      restartPolicy: Always

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark-master
+  namespace: {{ .Values.metadata.namespace }}
+  labels:
+    role: master
+spec:
+  ports:
+    - name: "{{ .Values.sparkMaster.sparkMasterWebuiPort }}"
+      port: {{ .Values.sparkMaster.sparkMasterWebuiPort }}
+      targetPort: {{ .Values.sparkMaster.targetSparkMasterWebuiPort }}
+    - name: "{{ .Values.sparkMaster.sparkMasterPort }}"
+      port: {{ .Values.sparkMaster.sparkMasterPort }}
+      targetPort: {{ .Values.sparkMaster.targetSparkMasterPort }}
+    - name: "{{ .Values.sparkMaster.sparkRestPort }}"
+      port: {{ .Values.sparkMaster.sparkRestPort }}
+      targetPort: {{ .Values.sparkMaster.targetSparkRestPort }}
+  selector:
+    role: master
+  type: {{ .Values.general.serviceType }}
+  clusterIP: None
