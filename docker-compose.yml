@@ -7,7 +7,7 @@ services:
       dockerfile: ./spark/Dockerfile
     image: mounirbs/spark-python3-java11:3.5.4
     ports:
-      - "80:8080"
+      - "8080:8080"
       - "7077:7077"
       - "6066:6066"
     labels:
@@ -58,7 +58,7 @@ services:
       - ./livy-server/conf/:/opt/livy/conf/       
       - ./livy-server/spark/conf/:/opt/spark/conf/
     ports:
-      - '443:8998'
+      - '8998:8998'
     labels:
       kompose.service.expose: true
       kompose.service.type: nodeport
