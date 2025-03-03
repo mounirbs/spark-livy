@@ -5,14 +5,14 @@ services:
     build:
       context: ./
       dockerfile: ./spark/Dockerfile
-    image: mounirbs/spark-python3-java11:3.5.4
+    image: mounirbs-local/spark-python3-java11:3.5.4
     ports:
       - "8080:8080"
       - "7077:7077"
       - "6066:6066"
     labels:
       kompose.service.expose: true
-      kompose.service.type: nodeport
+      kompose.service.type: headless
     environment:
       - SPARK_MASTER_HOST=spark-master
       - SPARK_MASTER_PORT=7077
@@ -29,7 +29,12 @@ services:
 
   spark-worker:
     # reuse the image built for the spark-master
-    image: mounirbs/spark-python3-java11:3.5.4
+    image: mounirbs-local/spark-python3-java11:3.5.4
+    ports:
+      - "8081:8081"
+    labels:
+      kompose.service.expose: true
+      kompose.service.type: headless  
     container_name: spark-worker
     hostname: spark-worker
     environment:
@@ -45,23 +50,23 @@ services:
     volumes:
       - ./python:/python
 
-  livy:
-    container_name: livy-server
-    hostname: livy-server
+  apache-livy:
+    container_name: apache-livy
+    hostname: apache-livy
     environment:
       - PYSPARK_PYTHON=python3
-    build: ./livy-server/
-    image: mounirbs/livy-spark3.5.4-python3-java11:0.8
+    build: ./apache-livy/
+    image: mounirbs-local/livy-spark3.5.4-python3-java11:0.8
     command: ["sh", "-c", "/opt/livy/bin/livy-server"]
     user: root
     volumes:
-      - ./livy-server/conf/:/opt/livy/conf/       
-      - ./livy-server/spark/conf/:/opt/spark/conf/
+      - ./apache-livy/conf/:/opt/livy/conf/       
+      - ./apache-livy/spark/conf/:/opt/spark/conf/
     ports:
       - '8998:8998'
     labels:
       kompose.service.expose: true
-      kompose.service.type: nodeport
+      kompose.service.type: headless
     depends_on:
       - spark-master
       - spark-worker

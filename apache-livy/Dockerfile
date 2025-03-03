@@ -1,6 +1,6 @@
 #https://github.com/apache/incubator-livy?tab=readme-ov-file#building-livy
 # Reuse the same image built for Spark Master/Worker
-FROM mounirbs/spark-python3-java11:3.5.4
+FROM mounirbs-local/spark-python3-java11:3.5.4
 USER root
 ENV LIVY_HOME /opt/livy
 WORKDIR /opt/

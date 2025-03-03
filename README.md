@@ -14,7 +14,7 @@ pip install -r requirements.txt
 
 ## Build and Start services (Spark Master, Spark Worker and Apache Livy)
 ```
-docker compose up -d
+docker compose up -d --build
 ```
 
 ## Testing the Spark Cluster - Spark Submit
@@ -206,7 +206,7 @@ python ./python/livy/delete_session.py
 ```
 kompose --file docker-compose.yml convert -o helm -c
 ```
-Some adjustments/cleaning was done on the helm chart created by kompose.
+Some adjustments/cleaning were done on the helm chart created by kompose.
 
 ## Helm
 ```
