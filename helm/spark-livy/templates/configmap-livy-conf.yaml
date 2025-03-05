@@ -1,4 +1,8 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: livy-configs
+  namespace: {{ .Values.metadata.namespace }}
 data:
   livy-client.conf: |
     #
@@ -408,7 +412,3 @@ data:
 
     # Don't allow users to override the RSC timeout.
     livy.rsc.server.idle-timeout
-kind: ConfigMap
-metadata:
-  name: livy-configs
-  namespace: {{ .Values.metadata.namespace }}

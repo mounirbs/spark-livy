@@ -1,4 +1,8 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spark-configs
+  namespace: {{ .Values.metadata.namespace }}
 data:
   spark-defaults.conf: |
     #
@@ -34,7 +38,10 @@ data:
     # spark.serializer                 org.apache.spark.serializer.KryoSerializer
     spark.driver.memory               {{ .Values.apacheLivy.sparkDriverMemory }}
     # spark.executor.extraJavaOptions  -XX:+PrintGCDetails -Dkey=value -Dnumbers="one two three"
-kind: ConfigMap
-metadata:
-  name: spark-configs
-  namespace: {{ .Values.metadata.namespace }}
+
+    # Dynamic Allocation
+    # Livy considers a dynamic executor one full worker (no concept of cores). So if a worker has 4 cores, one executor for Apache Livy will contain 4 cores
+    spark.dynamicAllocation.enabled                 {{ .Values.general.dynamicAllocation.enabled }}
+    spark.dynamicAllocation.minExecutors            {{ .Values.general.dynamicAllocation.minExecutors }}
+    spark.dynamicAllocation.maxExecutors            {{ .Values.general.dynamicAllocation.maxExecutors }}
+    spark.dynamicAllocation.initialExecutors        {{ .Values.general.dynamicAllocation.initialExecutors }}

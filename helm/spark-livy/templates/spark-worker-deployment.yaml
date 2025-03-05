@@ -6,7 +6,7 @@ metadata:
   labels:
     role: worker
 spec:
-  replicas: 1
+  replicas: {{ .Values.sparkWorker.replicas }}
   selector:
     matchLabels:
       role: worker
@@ -34,5 +34,5 @@ spec:
           ports:
             - containerPort: {{ .Values.sparkWorker.targetSparkWorkerWebuiPort }}
               protocol: TCP
-      hostname: spark-worker
+      #hostname: spark-worker
       restartPolicy: Always

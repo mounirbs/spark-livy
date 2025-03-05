@@ -196,6 +196,21 @@ curl localhost:8998/sessions/0 -X DELETE 
 ### Apache Livy REST API using Python Request library
 ```
 python ./python/livy/start_session.py
+```
+[numExecutors](https://github.com/apache/incubator-livy/blob/branch-0.8/server/src/main/scala/org/apache/livy/server/interactive/InteractiveSession.scala#L106C10-L106C34)
+numExecutors refers to spark.executor.instances (see the above link) which is a config for Spark deployement on Yarn. For a Standalone deployement we can use **spark.cores.max** instead
+
+The bellow configuration did not work well when having 2 sessions for executors sharing the same worker for cores. One session got killed randomly, because part of the ressources were in the same worker.
+```
+data = {'kind': 'pyspark', 'name': 'test pyspark session from python code2', 'proxyUser': 'Mounir', 'driverCores': 1, 'driverMemory': '1g', 'executorMemory': '1g', "conf": {"spark.cores.max": 2}}
+```
+This configuration works on K8s using Spark Dynamic allocation enabled (see spark-defaults config file).
+```
+data = {'kind': 'pyspark', 'name': 'test pyspark session from python code', 'proxyUser': 'Mounir', 'executorMemory': '2g'}
+```
+
+**Next files to run:**
+```
 python ./python/livy/wait_for_idle.py
 python ./python/livy/init_java_gateway.py
 python ./python/livy/run_code.py

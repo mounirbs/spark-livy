@@ -4,6 +4,11 @@ general:
   #ClusterIP, NodePort, LoadBalancer
   #ClusterIP is supported. Requires also Headless Services (https://kubernetes.io/docs/concepts/services-networking/service/#headless-services)
   serviceType: ClusterIP
+  dynamicAllocation:
+    enabled: true
+    minExecutors: 1
+    maxExecutors: 4
+    initialExecutors: 1
 sparkMaster:
   # Target ports: port on the pod(s) to forward traffic to
   # ports: ports of this service
@@ -15,8 +20,9 @@ sparkMaster:
   sparkRestPort: 6066
   image: mounirbs/spark-python3-java11:3.5.4
 sparkWorker:
-  sparkWorkerCores: 1
-  sparkWorkerMemory: 4g
+  replicas: 2
+  sparkWorkerCores: 2
+  sparkWorkerMemory: 2g
   targetSparkWorkerWebuiPort: 8081
   sparkWorkerWebuiPort: 8081
   image: mounirbs/spark-python3-java11:3.5.4
