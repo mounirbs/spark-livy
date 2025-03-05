@@ -197,8 +197,7 @@ curl localhost:8998/sessions/0 -X DELETE 
 ```
 python ./python/livy/start_session.py
 ```
-[numExecutors](https://github.com/apache/incubator-livy/blob/branch-0.8/server/src/main/scala/org/apache/livy/server/interactive/InteractiveSession.scala#L106C10-L106C34)
-numExecutors refers to spark.executor.instances (see the above link) which is a config for Spark deployement on Yarn. For a Standalone deployement we can use **spark.cores.max** instead
+[numExecutors](https://github.com/apache/incubator-livy/blob/branch-0.8/server/src/main/scala/org/apache/livy/server/interactive/InteractiveSession.scala#L106C10-L106C34) refers to **spark.executor.instances** (see the above link) which is a config for Spark deployement on Yarn. For a Standalone deployement we can use **spark.cores.max** instead
 
 The bellow configuration did not work well when having 2 sessions for executors sharing the same worker for cores. One session got killed randomly, because part of the ressources were in the same worker.
 ```
