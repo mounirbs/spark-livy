@@ -251,4 +251,4 @@ Lakehouse.Execute.All
 Lakehouse.Read.All
 Workspace.ReadWrite.All
 ```
-If testing from a Desktop, the Entra ID application needs to configure a Mobile and desktop applications platform and enable a redirect url to http://localhost:<port> under that platform configuration. No secret is required for the application in this type of platform.
+If testing from a Desktop, the Entra ID application needs to configure a Mobile and desktop applications platform and enable a redirect url to ```http://localhost:<port>``` under that platform configuration. No secret is required for the application in this type of platform.
