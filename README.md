@@ -234,3 +234,21 @@ kubectl -n spark-livy get all
 
 helm uninstall spark-livy -n spark-livy
 ```
+## Fabric Livy endpoint
+See test files under
+```
+python/fabric
+```
+A Microsoft Entra ID application is required for the authentication with Fabric permissions (need a grand admin consent)
+```
+Code.AccessAzureDataExplorer.All
+Code.AccessAzureDataLake.All
+Code.AccessAzureKeyvault.All
+Code.AccessFabric.All
+Code.AccessStorage.All
+Item.ReadWrite.All
+Lakehouse.Execute.All
+Lakehouse.Read.All
+Workspace.ReadWrite.All
+```
+If testing from a Desktop, the Entra ID application needs to configure a Mobile and desktop applications platform and enable a redirect url to http://localhost:<port> under that platform configuration. No secret is required for the application in this type of platform.
